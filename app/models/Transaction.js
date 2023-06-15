@@ -1,5 +1,5 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, UUIDV4 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Transaction extends Model {
     /**
@@ -27,6 +27,24 @@ module.exports = (sequelize, DataTypes) => {
       },
       order_id: DataTypes.DATE,
       payment: DataTypes.STRING,
+    },
+    {
+      hooks: {
+        afterCreate: async (transaction, options) => {
+          try {
+            await sequelize.models.auditLogs.create({
+              tableName: "Transactions",
+              task: "insert",
+              desc: `Process insert data ${JSON.stringify(
+                transaction.toJSON()
+              )}`,
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      },
+      sequelize,
     },
     {
       sequelize,

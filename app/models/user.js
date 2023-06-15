@@ -33,6 +33,24 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
     },
     {
+      hooks: {
+        afterCreate: async (user, options) => {
+          try {
+            await sequelize.models.auditLogs.create({
+              tableName: "Users",
+              task: "insert",
+              desc: `Process insert data ${JSON.stringify(
+                user.toJSON()
+              )}`,
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      },
+      sequelize
+    },
+    {
       sequelize,
       modelName: "User",
     }

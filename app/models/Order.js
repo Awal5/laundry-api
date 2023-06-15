@@ -26,12 +26,27 @@ module.exports = (sequelize, DataTypes) => {
   }
   Order.init(
     {
-      id: { type: DataTypes.UUID, allowNull: false, primaryKey: true },
+      id: { type: DataTypes.DATE, allowNull: false, primaryKey: true },
       price: DataTypes.INTEGER,
       weight: DataTypes.INTEGER,
       total_cost: DataTypes.INTEGER,
       status: DataTypes.STRING,
       user_id: DataTypes.STRING,
+    },{
+      hooks:{
+        afterCreate: async (order, options) => {
+          try{
+            await sequelize.models.auditLogs.create({
+              tableName: "Orders",
+              taks: "insert",
+              desc: `Process insert data ${JSON.stringify(order.toJSON())}`
+            })
+          }catch(error){
+            console.log(error)
+          }
+        }
+      },
+      sequelize
     },
     {
       sequelize,
