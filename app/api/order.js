@@ -13,8 +13,9 @@ module.exports = {
           .send({ status_response: "Error", message: "Order is Empty" });
 
       res.status(200).send({
-        status_response: "Orders Retrived",
+        status_response: "Retrived",
         error: null,
+        message: "All Order Successfully Retrieved",
         data: orders,
       });
     } catch (error) {
@@ -39,9 +40,12 @@ module.exports = {
           error: "Not Found",
         });
 
-      res
-        .status(404)
-        .send({ status_response: "Order Retrieved", error: null, data: order });
+      res.status(404).send({
+        status_response: "Retrieved",
+        error: null,
+        message: `Order with ${id} Successfully Retrieved`,
+        data: order,
+      });
     } catch (error) {
       res.status(500).send({
         status_response: "Internal Server Error",
@@ -65,8 +69,9 @@ module.exports = {
         });
 
       res.status(200).send({
-        status_response: `Customer Order with id ${user_id} Retrieved`,
+        status_response: "Retrieved",
         error: null,
+        message: `Customer Order with ${user_id} Successfully Retrieved`,
         data: orders,
       });
     } catch (error) {
@@ -97,6 +102,7 @@ module.exports = {
       res.status(201).send({
         status_response: "Created",
         error: null,
+        message: "Order Successfully Created",
         data: order,
       });
     } catch (error) {
@@ -133,9 +139,12 @@ module.exports = {
         total_cost: total_cost || order.total_cost,
       });
 
-      res
-        .status(200)
-        .send({ status_response: "Updated", error: null, data: order });
+      res.status(200).send({
+        status_response: "Updated",
+        error: null,
+        message: `Order with id ${id} Successfully Updated`,
+        data: order,
+      });
     } catch (error) {
       res.status(500).send({
         status_response: "Internal Server Error",
@@ -158,9 +167,12 @@ module.exports = {
         });
       }
       await order.update({ status: status || order.status });
-      res
-        .status(200)
-        .send({ status_response: "Updated", error: null, data: order });
+      res.status(200).send({
+        status_response: "Updated",
+        error: null,
+        message: `Order Status with id ${id} Successfully Updated`,
+        data: order,
+      });
     } catch (error) {
       res.status(500).send({
         status_response: "Internal Server Error",
@@ -182,13 +194,12 @@ module.exports = {
         });
       }
       await Order.destroy({ where: { id: id } });
-      res
-        .status(200)
-        .send({
-          status_response: "Deleted",
-          error: null,
-          message: "Order Successfully Deleted",
-        });
+      res.status(200).send({
+        status_response: "Deleted",
+        error: null,
+        message: `Order with id ${id} Successfully Deleted`,
+        data: [],
+      });
     } catch (error) {
       res.status(500).send({
         status_response: "Internal Server Error",

@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Transaction.belongsTo(models.Order, {
         foreignKey: "order_id",
-        as: "order",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
