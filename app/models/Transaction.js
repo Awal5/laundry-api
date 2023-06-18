@@ -29,9 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        afterCreate: async (transaction, options) => {
+        afterCreate: async (transaction, option) => {
+          console.log("User afterCreate", sequelize?.models);
           try {
-            await sequelize.models.auditLogs.create({
+            await sequelize.models.AuditLogs.create({
               tableName: "Transactions",
               task: "insert",
               desc: `Process insert data ${JSON.stringify(

@@ -32,21 +32,22 @@ module.exports = (sequelize, DataTypes) => {
       total_cost: DataTypes.INTEGER,
       status: DataTypes.STRING,
       user_id: DataTypes.STRING,
-    },{
-      hooks:{
+    },
+    {
+      hooks: {
         afterCreate: async (order, options) => {
-          try{
-            await sequelize.models.auditLogs.create({
+          try {
+            await sequelize.models.AuditLogs.create({
               tableName: "Orders",
-              taks: "insert",
-              desc: `Process insert data ${JSON.stringify(order.toJSON())}`
-            })
-          }catch(error){
-            console.log(error)
+              task: "insert",
+              desc: `Process insert data ${JSON.stringify(order.toJSON())}`,
+            });
+          } catch (error) {
+            console.log(error);
           }
-        }
+        },
       },
-      sequelize
+      sequelize,
     },
     {
       sequelize,

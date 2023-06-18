@@ -36,19 +36,17 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         afterCreate: async (user, options) => {
           try {
-            await sequelize.models.auditLogs.create({
+            await sequelize.models.AuditLogs.create({
               tableName: "Users",
               task: "insert",
-              desc: `Process insert data ${JSON.stringify(
-                user.toJSON()
-              )}`,
+              desc: `Process insert data ${JSON.stringify(user.toJSON())}`,
             });
           } catch (error) {
             console.log(error);
           }
         },
       },
-      sequelize
+      sequelize,
     },
     {
       sequelize,
